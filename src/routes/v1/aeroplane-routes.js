@@ -4,6 +4,8 @@ const router=express.Router()
 
 const {AeroplaneController}=require('../../controllers')
 
-router.post('/',AeroplaneController.createAeroplane)
+const {AeroplaneMiddleware}=require('../../middlewares')
+
+router.post('/',AeroplaneMiddleware.validateCreateRequest,AeroplaneController.createAeroplane)
 
 module.exports=router
