@@ -10,8 +10,15 @@ const createAeroplane=async(data)=>{
         return aeroplane
     }
     catch(error){
-        if(error.name='TypeError'){
+        if(error.name=='TypeError'){            
             throw new AppError('Cannot create a new aeroplane object',StatusCodes.INTERNAL_SERVER_ERROR)
+        }
+        else if(error.name=='SequelizeValidationError'){    
+            let explanation=[]
+            error.errors.forEach(element => {
+                explanation.push(element.message)
+            });
+            throw new AppError(explanation,StatusCodes.BAD_REQUEST)
         }
         throw error
     }

@@ -6,7 +6,7 @@ class CrudRepository{
         this.model=model
     }
     async create(data){
-        const response=await this.model.creat(data)
+        const response=await this.model.create(data)
         return response
     }
     async destroy(data){
