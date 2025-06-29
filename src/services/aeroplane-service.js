@@ -24,4 +24,56 @@ const createAeroplane=async(data)=>{
     }
 }
 
-module.exports={createAeroplane}
+const getAeroplanes=async()=>{
+    try{
+        const aeroplanes=await aeroplaneRepositor.getAll()
+        return aeroplanes
+    }
+    catch(error){
+        throw new AppError('Cannot fetch data of all the aeroplanes',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+const getAeroplane=async(id)=>{
+    try{
+        const aeroplane=await aeroplaneRepositor.get(id)
+        return aeroplane
+    }
+    catch(error){
+        if(error.statusCode==StatusCodes.NOT_FOUND)
+            throw new AppError('The aeroplane you requested is not present',error.statusCode)
+        throw new AppError('Cannot fetch data of all the aeroplanes',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+const destroyAeroplane=async(id)=>{
+    try{
+        const aeroplane=await aeroplaneRepositor.destroy(id)
+        return aeroplane
+    }
+    catch(error){
+        if(error.statusCode==StatusCodes.NOT_FOUND)
+            throw new AppError('The aeroplane you requested to delete is not present',error.statusCode)
+        throw new AppError('Cannot fetch data of all the aeroplanes',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+const updateAeroplane=async(id,data)=>{
+    try{
+        const aeroplane=await aeroplaneRepositor.update(id,data)
+        return aeroplane
+    }
+    catch(error){
+        if(error.statusCode==StatusCodes.NOT_FOUND)
+            throw new AppError('The aeroplane you requested to delete is not present',error.statusCode)
+        throw new AppError('Cannot fetch data of all the aeroplanes',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+module.exports={
+    createAeroplane,
+    getAeroplanes,
+    getAeroplane,
+    destroyAeroplane,
+    updateAeroplane
+}
