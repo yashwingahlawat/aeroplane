@@ -14,6 +14,6 @@ app.use(express.urlencoded({extended:true}))
 app.use('/api',apiRoutes)
 
 app.listen(ServerConfig.PORT,()=>{
-    console.log(`Server running on ${ServerConfig.PORT}`)
+    console.log(`Server running on port: ${ServerConfig.PORT}`)
     Logger.info(`Successfully started the server`,'root',{})
 })
