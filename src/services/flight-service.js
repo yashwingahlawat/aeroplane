@@ -9,11 +9,11 @@ const flightRepositor=new FlightRepositor()
 const createFlight=async(data)=>{
     try{
         if(compareTime(data.departureTime,data.arrivalTime))throw new AppError('Invalid Arrival and Departure time',StatusCodes.BAD_REQUEST)
+        if(data.departureAirportId==data.arrivalAirportId)throw new AppError('Same Arrival and Departure Airport',StatusCodes.BAD_REQUEST)
         const flight=await flightRepositor.create(data)
         return flight
     }
     catch(error){
-        console.log(error)
         if(error.name=='TypeError'){            
             throw new AppError('Cannot create a new flight object',StatusCodes.INTERNAL_SERVER_ERROR)
         }
@@ -58,16 +58,41 @@ const getAllFlights=async(query)=>{
         const params=query.sort.split(',')
         sortFilter=params.map(param=>param.split('_'))
     }
-    console.log(customFilter)
     try {
         const flights=await flightRepositor.getAllFlights(customFilter,sortFilter)
         return flights
     } catch (error) {
-        console.log(error)
         throw new AppError('Cannot fetch data of all the flight',StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
+
+const getFlight=async(id)=>{
+    try{
+        const flight=await flightRepositor.get(id)
+        return flight
+    }
+    catch(error){
+        if(error.statusCode==StatusCodes.NOT_FOUND)
+            throw new AppError('The flight you requested is not present',error.statusCode)
+        throw new AppError('Cannot fetch data of all the aeroplanes',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+const updateSeats=async(data)=>{
+    try{
+        const flight=await flightRepositor.updateRemainingSeats(data.flightId,data.seats,data.dec)
+        return flight
+    }
+    catch(error){
+        if(error.statusCode==StatusCodes.NOT_FOUND)
+            throw new AppError('The flight you requested is not present',error.statusCode)
+        throw new AppError('Cannot fetch data of all the aeroplanes',StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
 module.exports={
     createFlight,
-    getAllFlights
+    getAllFlights,
+    getFlight,
+    updateSeats
 }

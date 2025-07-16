@@ -54,7 +54,6 @@ const getCity=async(id)=>{
         return city
     }
     catch(error){
-        console.log(error)
         if(error.statusCode==StatusCodes.NOT_FOUND)
             throw new AppError('The city you requested does not exist.',error.statusCode)
         throw new AppError('Cannot fetch data of all the cities',StatusCodes.INTERNAL_SERVER_ERROR)
@@ -67,7 +66,6 @@ const getCities=async()=>{
         return cities
     }
     catch(error){
-        console.log(error)
         if(error.statusCode==StatusCodes.NOT_FOUND)
             throw new AppError('The city you requested does not exist.',error.statusCode)
         throw new AppError('Cannot fetch data of all the cities',StatusCodes.INTERNAL_SERVER_ERROR)

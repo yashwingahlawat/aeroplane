@@ -23,7 +23,6 @@ const createFlight=async(req,res)=>{
         return res.status(StatusCodes.CREATED).json(SuccessResponse)
     }
     catch(error){
-        console.log(error)
         ErrorResponse.error=error
         resStatuseCode=error.statusCode?error.statusCode:StatusCodes.INTERNAL_SERVER_ERROR
         return res.status(resStatuseCode).json(ErrorResponse)
@@ -37,13 +36,43 @@ const getAllFlights=async (req,res) => {
         return res.status(StatusCodes.OK).json(SuccessResponse)
     }
     catch(error){
-        console.log(error)
         ErrorResponse.error=error
         resStatuseCode=error.statusCode?error.statusCode:StatusCodes.INTERNAL_SERVER_ERROR
         return res.status(resStatuseCode).json(ErrorResponse)
     }
 }
+
+const getFlight=async (req,res) => {
+    try{
+        const flight=await FlightService.getFlight(req.params.id)
+        SuccessResponse.data=flight
+        return res.status(StatusCodes.OK).json(SuccessResponse)
+    }
+    catch(error){
+        ErrorResponse.error=error
+        return res.status(error.statusCode).json(ErrorResponse)
+    }
+}
+
+const updateSeats=async (req,res) => {
+    try{
+        const flight=await FlightService.updateSeats({
+            flightId:req.params.id,
+            seats:req.body.seats,
+            dec:req.body.dec
+        })
+        SuccessResponse.data=flight
+        return res.status(StatusCodes.OK).json(SuccessResponse)
+    }
+    catch(error){
+        ErrorResponse.error=error
+        return res.status(error.statusCode).json(ErrorResponse)
+    }
+}
+
 module.exports={
     createFlight,
-    getAllFlights
+    getAllFlights,
+    getFlight,
+    updateSeats
 }
