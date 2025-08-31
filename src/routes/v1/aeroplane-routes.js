@@ -21,10 +21,12 @@ router.get('/:id',
 
 // api/v1/aeroplanes/:id :GET    
 router.delete('/:id',
+    AeroplaneMiddleware.validateAdmin,
     AeroplaneController.destroyAeroplane)
 
 // api/v1/aeroplanes/:id :PATCH    
 router.patch('/:id',
+    AeroplaneMiddleware.validateAdmin,
     AeroplaneMiddleware.validateUpdateRequest,
     AeroplaneController.updateAeroplane)
 module.exports=router
